@@ -11,11 +11,9 @@ $accountOne->deposit(500);
 $accountOne->deposit(1000);
 
 dump($accountOne . '');
+dump($accountTwo . '');
+$accountOne->transfert($accountTwo, 1000);
 
-try {
-    $accountOne->retrait(2000);
-    dump($accountOne . '');
-} catch (InvalidArgumentException $exception) {
-    dump($exception->getMessage());
-}
+dump($accountTwo . '');
+dump($accountOne . '');
 

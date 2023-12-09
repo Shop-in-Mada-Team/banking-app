@@ -35,7 +35,7 @@ class BankAccount
         $this->amount = $this->amount + $montant;
     }
 
-    public function retrait(int $montant)
+    public function retrait(int $montant): void
     {
         if ($montant > $this->amount) {
             throw new \InvalidArgumentException("Votre solde est insuffisante!");
@@ -43,8 +43,15 @@ class BankAccount
         $this->amount = $this->amount - $montant;
     }
 
+    public function transfert(BankAccount $recipientAccount, int $amount): void
+    {
+        dump(sprintf("Transférer un montant de %d du compte %s vers le compte %s", $amount, $this->id, $recipientAccount->getId()));
+        $this->retrait($amount);
+        $recipientAccount->deposit($amount);
+    }
+
     public function __toString(): string
     {
-        return sprintf("Ar %d", $this->getAmount());
+        return sprintf("BankAccount # %s : Ar %d", $this->id, $this->getAmount());
     }
 }
