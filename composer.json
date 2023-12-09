@@ -1,0 +1,15 @@
+{
+    "name": "shopinmada/banking-app",
+    "description": "A bank account app to learn poo in php",
+    "type": "project",
+    "require": {
+        "symfony/var-dumper": "^5.4"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Shopinmada\\BankingApp\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
