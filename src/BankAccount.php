@@ -4,22 +4,22 @@ namespace Shopinmada\BankingApp;
 
 class BankAccount
 {
-    private string $id;
-    private int $amount;
+    private BankAccountId $bankAccountId;
+    private MoneyInterface $money;
 
     /**
-     * @param string $id
-     * @param int $amount
+     * @param BankAccountId $bankAccountId
+     * @param MoneyInterface $money
      */
-    public function __construct(string $id, int $amount)
+    public function __construct(BankAccountId $bankAccountId, MoneyInterface $money)
     {
-        $this->id = $id;
-        $this->amount = $amount;
+        $this->bankAccountId = $bankAccountId;
+        $this->money = $money;
     }
 
-    public function getId(): string
+    public function getId(): BankAccountId
     {
-        return $this->id;
+        return $this->bankAccountId;
     }
 
     /**
@@ -27,31 +27,31 @@ class BankAccount
      */
     private function getAmount(): string
     {
-        return $this->amount;
+        return $this->money->amount();
     }
 
-    public function deposit(int $montant): void
+    public function deposit(MoneyInterface $money): void
     {
-        $this->amount = $this->amount + $montant;
+        $this->money->add($money);
     }
 
-    public function retrait(int $montant): void
+    public function retrait(MoneyInterface $money): void
     {
-        if ($montant > $this->amount) {
+        if ($money->amount() > $this->money->amount()) {
             throw new \InvalidArgumentException("Votre solde est insuffisante!");
         }
-        $this->amount = $this->amount - $montant;
+        $this->money->subtracts($money);
     }
 
-    public function transfert(BankAccount $recipientAccount, int $amount): void
+    public function transfert(BankAccount $recipientAccount, MoneyInterface $money): void
     {
-        dump(sprintf("Transférer un montant de %d du compte %s vers le compte %s", $amount, $this->id, $recipientAccount->getId()));
-        $this->retrait($amount);
-        $recipientAccount->deposit($amount);
+        dump(sprintf("Transférer un montant de %d du compte %s vers le compte %s", $money->amount(), $this->bankAccountId, $recipientAccount->getId()));
+        $this->retrait($money);
+        $recipientAccount->deposit($money);
     }
 
     public function __toString(): string
     {
-        return sprintf("BankAccount # %s : Ar %d", $this->id, $this->getAmount());
+        return sprintf("BankAccount # %s : Ar %d", $this->bankAccountId, $this->getAmount());
     }
 }
