@@ -1,21 +1,18 @@
 <?php
 
 
-use Shopinmada\BankingApp\BankAccount;
 use Shopinmada\BankingApp\BankAccountId;
-use Shopinmada\BankingApp\Money;
+use Shopinmada\BankingApp\Repository\BankAccountInMemoryRepository;
+use Shopinmada\BankingApp\Service\BankAccountService;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$accountOne = new BankAccount(BankAccountId::fromInt(1), Money::fromAmount('MGA', 100));
-$accountTwo = new BankAccount(BankAccountId::fromInt(2), Money::fromAmount('MGA', 300));
-$accountOne->deposit(Money::fromAmount('MGA', 500));
-$accountOne->deposit(Money::fromAmount('MGA', 1000));
+$bankAccountRepository = new BankAccountInMemoryRepository();
+$bankAccountId = (new BankAccountService($bankAccountRepository))->createAccount(15000);
 
-dump($accountOne . '');
-dump($accountTwo . '');
-$accountOne->transfert($accountTwo, Money::fromAmount('MGA', 1000));
+dump($bankAccountId);
 
-dump($accountTwo . '');
-dump($accountOne . '');
+sleep(5);
+$bankAccount = $bankAccountRepository->get(BankAccountId::fromUuid($bankAccountId));
 
+dump($bankAccount . '');

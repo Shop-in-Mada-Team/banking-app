@@ -16,6 +16,11 @@ final class BankAccountId
         return new self($id);
     }
 
+    public static function fromUuid(string $uuid): self
+    {
+        return new self($uuid);
+    }
+
     public function __toString(): string
     {
         return $this->id;
