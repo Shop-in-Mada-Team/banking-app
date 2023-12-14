@@ -1,10 +1,10 @@
 <?php
 
-namespace Shopinmada\BankingApp;
+namespace Shopinmada\BankingApp\Domain\ValueObject;
 
-final class Currency
+final readonly class Currency
 {
-    private function __construct(private readonly string $isoCode)
+    private function __construct(private string $isoCode)
     {
 
     }

@@ -1,7 +1,7 @@
 <?php
 
 
-use Shopinmada\BankingApp\BankAccountId;
+use Shopinmada\BankingApp\Domain\ValueObject\BankAccountId;
 use Shopinmada\BankingApp\Repository\BankAccountInMemoryRepository;
 use Shopinmada\BankingApp\Service\BankAccountService;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopinmada\BankingApp;
+namespace Shopinmada\BankingApp\Domain\ValueObject;
 
 final class Money implements MoneyInterface
 {

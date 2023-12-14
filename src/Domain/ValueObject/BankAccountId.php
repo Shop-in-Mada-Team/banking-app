@@ -1,21 +1,18 @@
 <?php
 
-namespace Shopinmada\BankingApp;
+namespace Shopinmada\BankingApp\Domain\ValueObject;
 
-final class BankAccountId
+final readonly class BankAccountId
 {
-    private string $id;
 
-    public function __construct(string $id)
+    public function __construct(private string $id)
     {
-        $this->id = $id;
     }
 
     public static function fromInt(int $id): self
     {
         return new self($id);
     }
-
     public static function fromUuid(string $uuid): self
     {
         return new self($uuid);

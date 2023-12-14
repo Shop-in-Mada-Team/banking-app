@@ -2,9 +2,9 @@
 
 namespace Shopinmada\BankingApp\Service;
 
-use Shopinmada\BankingApp\BankAccountId;
+use Shopinmada\BankingApp\Domain\ValueObject\BankAccountId;
+use Shopinmada\BankingApp\Domain\ValueObject\Money;
 use Shopinmada\BankingApp\Factory\BankAccountFactory;
-use Shopinmada\BankingApp\Money;
 use Shopinmada\BankingApp\Repository\BankAccountRepositoryInterface;
 
 final class BankAccountService

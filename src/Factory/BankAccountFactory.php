@@ -3,9 +3,9 @@
 namespace Shopinmada\BankingApp\Factory;
 
 use Ramsey\Uuid\Uuid;
-use Shopinmada\BankingApp\BankAccount;
-use Shopinmada\BankingApp\BankAccountId;
-use Shopinmada\BankingApp\Money;
+use Shopinmada\BankingApp\Domain\Entity\BankAccount;
+use Shopinmada\BankingApp\Domain\ValueObject\BankAccountId;
+use Shopinmada\BankingApp\Domain\ValueObject\Money;
 
 final class BankAccountFactory
 {

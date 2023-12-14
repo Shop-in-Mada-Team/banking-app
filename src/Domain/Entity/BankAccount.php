@@ -1,6 +1,9 @@
 <?php
 
-namespace Shopinmada\BankingApp;
+namespace Shopinmada\BankingApp\Domain\Entity;
+
+use Shopinmada\BankingApp\Domain\ValueObject\BankAccountId;
+use Shopinmada\BankingApp\Domain\ValueObject\MoneyInterface;
 
 class BankAccount
 {

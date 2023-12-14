@@ -2,8 +2,8 @@
 
 namespace Shopinmada\BankingApp\Repository;
 
-use Shopinmada\BankingApp\BankAccount;
-use Shopinmada\BankingApp\BankAccountId;
+use Shopinmada\BankingApp\Domain\Entity\BankAccount;
+use Shopinmada\BankingApp\Domain\ValueObject\BankAccountId;
 
 interface BankAccountRepositoryInterface
 {
