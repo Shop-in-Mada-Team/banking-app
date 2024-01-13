@@ -9,7 +9,7 @@ $accountOne = new BankAccount(1, 100);
 $accountTwo = new BankAccount(2, 300);
 $accountOne->deposit(500);
 $accountOne->deposit(1000);
-
+dump('kkk!');
 dump($accountOne . '');
 dump($accountTwo . '');
 $accountOne->transfert($accountTwo, 1000);
