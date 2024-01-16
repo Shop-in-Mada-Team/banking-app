@@ -26,9 +26,9 @@ class BankAccount
     }
 
     /**
-     * @return string
+     * @return int
      */
-    private function getAmount(): string
+    public function getAmount(): int
     {
         return $this->money->amount();
     }
@@ -48,11 +48,9 @@ class BankAccount
 
     public function transfert(BankAccount $recipientAccount, MoneyInterface $money): void
     {
-        dump(sprintf("Transférer un montant de %d du compte %s vers le compte %s", $money->amount(), $this->bankAccountId, $recipientAccount->getId()));
         $this->retrait($money);
         $recipientAccount->deposit($money);
     }
-
     public function __toString(): string
     {
         return sprintf("BankAccount # %s : Ar %d", $this->bankAccountId, $this->getAmount());
