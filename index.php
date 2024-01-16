@@ -1,21 +1,18 @@
 <?php
 
 
-use Shopinmada\BankingApp\BankAccount;
+use Shopinmada\BankingApp\Domain\ValueObject\BankAccountId;
+use Shopinmada\BankingApp\Repository\BankAccountInMemoryRepository;
+use Shopinmada\BankingApp\Service\BankAccountService;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$accountOne = new BankAccount(1, 100);
-$accountTwo = new BankAccount(2, 300);
-$accountOne->deposit(500);
-$accountOne->deposit(1000);
-dump('kkk!');
-dump($accountOne . '');
-dump($accountTwo . '');
-$accountOne->transfert($accountTwo, 1000);
-echo"hello";
-dump($accountTwo . '');
-dump($accountOne . '');
+$bankAccountRepository = new BankAccountInMemoryRepository();
+$bankAccountId = (new BankAccountService($bankAccountRepository))->createAccount(15000);
 
-echo "Hello world!";
+dump($bankAccountId);
 
+sleep(5);
+$bankAccount = $bankAccountRepository->get(BankAccountId::fromUuid($bankAccountId));
+
+dump($bankAccount . '');

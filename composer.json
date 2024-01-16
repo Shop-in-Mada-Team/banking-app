@@ -3,7 +3,8 @@
     "description": "A bank account app to learn poo in php",
     "type": "project",
     "require": {
-        "symfony/var-dumper": "^5.4"
+        "symfony/var-dumper": "^5.4",
+        "ramsey/uuid": "^4.7"
     },
     "license": "MIT",
     "autoload": {
