@@ -20,24 +20,24 @@ final class BankAccountService
         return $bankAccount->getId();
     }
 
-    public function depositMoney(BankAccountId $bankAccountId, int $amount)
+    public function depositMoney(BankAccountId $bankAccountId, int $amount, string $reason)
     {
         $bankAccount = $this->bankAccountRepository->get($bankAccountId);
-        $bankAccount->deposit(Money::fromAmount('MGA', $amount));
+        $bankAccount->deposit(Money::fromAmount('MGA', $amount), $reason);
         $this->bankAccountRepository->add($bankAccount);
     }
 
-    public function retraitMoney(BankAccountId $bankAccountId, int $amount)
+    public function retraitMoney(BankAccountId $bankAccountId, int $amount, string $reason)
     {
         $bankAccount = $this->bankAccountRepository->get($bankAccountId);
-        $bankAccount->retrait(Money::fromAmount('MGA', $amount));
+        $bankAccount->retrait(Money::fromAmount('MGA', $amount), $reason);
         $this->bankAccountRepository->add($bankAccount);
     }
 
-    public function transfertMoney(string $bankAccountSender, string $bankAccountRecipient, int $amount)
+    public function transfertMoney(string $bankAccountSender, string $bankAccountRecipient, int $amount, string $reason)
     {
         $senderAccount = $this->bankAccountRepository->get(BankAccountId::fromInt($bankAccountSender));
         $recipientAccount = $this->bankAccountRepository->get(BankAccountId::fromInt($bankAccountRecipient));
-        $senderAccount->transfert($recipientAccount, Money::fromAmount('MGA', $amount));
+        $senderAccount->transfert($recipientAccount, Money::fromAmount('MGA', $amount), $reason);
     }
 }
