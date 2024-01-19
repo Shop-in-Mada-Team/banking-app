@@ -36,34 +36,39 @@ class BankAccount
         return $this->money->amount();
     }
 
-    public function deposit(MoneyInterface $money): void
+    public function deposit(MoneyInterface $money, string $raison): void
     {
         $this->money->add($money);
-        $bankTransaction = new BankTransaction(bankAccount: $this, transactionType: TransactionType::DEPOSIT, amount: $money);
+        $bankTransaction = new BankTransaction($this, TransactionType::DEPOSIT, $money, $raison);
         $this->bankTransactions[] = $bankTransaction;
     }
 
-    public function retrait(MoneyInterface $money): void
+    public function retrait(MoneyInterface $money, string $motif): void
     {
         if ($money->amount() > $this->money->amount()) {
             throw new \InvalidArgumentException("Votre solde est insuffisante!");
         }
         $this->money->subtracts($money);
-        $bankTransaction = new BankTransaction(bankAccount: $this, transactionType: TransactionType::RETRAIT, amount: $money);
+        $bankTransaction = new BankTransaction($this, TransactionType::RETRAIT, $money, $motif);
         $this->bankTransactions[] = $bankTransaction;
     }
 
-    public function transfert(BankAccount $recipientAccount, MoneyInterface $money): void
+    public function transfert(BankAccount $recipientAccount, MoneyInterface $money, string $raison): void
     {
-        $this->retrait($money);
-        $recipientAccount->deposit($money);
-        $bankTransaction = new BankTransaction(bankAccount: $this, transactionType: TransactionType::TRANSFER, amount: $money);
+        $this->retrait($money, $raison);
+        $recipientAccount->deposit($money, $raison);
+        $bankTransaction = new BankTransaction($this, TransactionType::TRANSFER, $money, $raison);
         $this->bankTransactions[] = $bankTransaction;
     }
 
     public function transactions(): array
     {
         return $this->bankTransactions;
+    }
+
+    public function countTransaction(): int
+    {
+        return count($this->transactions());
     }
 
     public function __toString(): string

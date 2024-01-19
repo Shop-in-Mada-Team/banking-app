@@ -9,9 +9,14 @@ class BankTransaction
 {
     private \DateTimeImmutable $transactionDate;
 
-    public function __construct(private readonly BankAccount $bankAccount, private readonly TransactionType $transactionType, private readonly MoneyInterface $amount)
+    public function __construct(private readonly BankAccount $bankAccount, private readonly TransactionType $transactionType, private readonly MoneyInterface $amount, private readonly string $motif)
     {
         $this->transactionDate = new \DateTimeImmutable();
+    }
+
+    public function getMotif(): string
+    {
+        return $this->motif;
     }
 
     public function getMoney(): MoneyInterface

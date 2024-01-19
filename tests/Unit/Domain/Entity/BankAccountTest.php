@@ -22,16 +22,18 @@ describe('Test BankAccount functionalities', function () {
     });
 
     test('deposit 500 MAG to the account should increase amount into 2300 MGA', function (Money $money) {
-        $this->bankAccount->deposit($money);
+        $this->bankAccount->deposit($money, 'Credit de BOA');
         expect($this->bankAccount->getAmount())->toBeInt()
-            ->toEqual(2300);
+            ->toEqual(2300)
+            ->and($this->bankAccount->countTransaction())->toEqual(1);
     })->with([
         fn() => Money::fromAmount('MGA', 500)
     ]);
 
     test('When I withdraw 1000 MGA from my account then the amount should decrease into 800 MGA', function (Money $money) {
-        $this->bankAccount->retrait($money);
-        expect($this->bankAccount->getAmount())->toEqual(800);
+        $this->bankAccount->retrait($money, 'Achat netflix');
+        expect($this->bankAccount->getAmount())->toEqual(800)
+            ->and($this->bankAccount->countTransaction())->toEqual(1);
     })->with([fn() => Money::fromAmount('MGA', 1000)]);
 
     it('should return an instance of BankAccountId', function () {
@@ -40,9 +42,10 @@ describe('Test BankAccount functionalities', function () {
 
     test('When I transfert 500 MGA from bank account #5 to bank account #10 then the bank account #10 should
      increase to 1000 MGA and the #5 should decrease 500 MGA', function (Money $money) {
-        $this->bankAccount->transfert($this->bankAccountTwo, $money);
+        $this->bankAccount->transfert($this->bankAccountTwo, $money, 'Virement compte epargne!');
         expect($this->bankAccountTwo->getAmount())->toEqual(1000)
-            ->and($this->bankAccount->getAmount())->toEqual(1300);
+            ->and($this->bankAccount->getAmount())->toEqual(1300)
+            ->and($this->bankAccount->countTransaction())->toEqual(2);
     })->with([
         fn() => Money::fromAmount('MGA', 500)
     ]);
