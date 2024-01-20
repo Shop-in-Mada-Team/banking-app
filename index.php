@@ -9,14 +9,17 @@ use Shopinmada\BankingApp\Service\BankAccountService;
 require_once __DIR__ . '/vendor/autoload.php';
 
 $bankAccountRepository = new BankAccountInMemoryRepository();
-$bankAccountId = (new BankAccountService($bankAccountRepository))->createAccount(15000);
+$bankAccountService = new BankAccountService($bankAccountRepository);
+$bankAccountId = $bankAccountService->createAccount(15000);
 
 dump($bankAccountId);
 
 sleep(5);
 $bankAccount = $bankAccountRepository->get(BankAccountId::fromUuid($bankAccountId));
 $bankAccount->deposit(Money::fromAmount('MGA', 7000), 'Virement salaire mois de janvier!');
+sleep(5);
 $bankAccount->deposit(Money::fromAmount('MGA', 7000), 'Rembouressement frais médicaux');
-dump($bankAccount->countTransaction());
-dump($bankAccount->transactions());
-dump($bankAccount . '');
+sleep(5);
+$bankAccount->deposit(Money::fromAmount('MGA', 8500), 'Payement freelance');
+sleep(10);
+dump($bankAccountService->fetchTransactionsById($bankAccount->getId()));

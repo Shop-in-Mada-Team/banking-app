@@ -40,4 +40,10 @@ final class BankAccountService
         $recipientAccount = $this->bankAccountRepository->get(BankAccountId::fromInt($bankAccountRecipient));
         $senderAccount->transfert($recipientAccount, Money::fromAmount('MGA', $amount), $reason);
     }
+
+    public function fetchTransactionsById(BankAccountId $bankAccountId): array
+    {
+        return $this->bankAccountRepository->get($bankAccountId)
+            ->transactions();
+    }
 }
