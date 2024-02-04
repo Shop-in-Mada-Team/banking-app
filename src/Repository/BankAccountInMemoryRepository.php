@@ -14,7 +14,7 @@ final class BankAccountInMemoryRepository implements BankAccountRepositoryInterf
         $this->bankAccounts = [];
     }
 
-    public function add(BankAccount $bankAccount)
+    public function add(BankAccount $bankAccount): void
     {
         $this->bankAccounts[] = $bankAccount;
     }
