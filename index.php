@@ -1,6 +1,7 @@
 <?php
 
 
+use Shopinmada\BankingApp\Domain\Entity\BankTransaction;
 use Shopinmada\BankingApp\Domain\ValueObject\BankAccountId;
 use Shopinmada\BankingApp\Domain\ValueObject\Money;
 use Shopinmada\BankingApp\Repository\BankAccountInMemoryRepository;
@@ -22,4 +23,9 @@ $bankAccount->deposit(Money::fromAmount('MGA', 7000), 'Rembouressement frais mé
 sleep(5);
 $bankAccount->deposit(Money::fromAmount('MGA', 8500), 'Payement freelance');
 sleep(10);
-dump($bankAccountService->fetchTransactionsById($bankAccount->getId()));
+$transactions = $bankAccountService->fetchTransactionsById($bankAccount->getId());
+
+/**@var BankTransaction $transaction */
+foreach ($transactions as $transaction) {
+    dump($transaction . '');
+}

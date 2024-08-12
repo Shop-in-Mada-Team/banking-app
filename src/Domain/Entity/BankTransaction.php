@@ -38,4 +38,9 @@ class BankTransaction
     {
         return $this->bankAccount;
     }
+
+    public function __toString(): string
+    {
+        return sprintf("%s | %s | %s", $this->getMotif(), $this->getMoney(), $this->getTransactionDate()->format('Y-m-d'));
+    }
 }
