@@ -10,8 +10,8 @@ use Shopinmada\BankingApp\Service\BankAccountService;
 require_once __DIR__ . '/vendor/autoload.php';
 
 $bankAccountRepository = new BankAccountInMemoryRepository();
-$bankAccountService = new BankAccountService($bankAccountRepository);
-$bankAccountId = $bankAccountService->createAccount(15000);
+$bankAccountService    = new BankAccountService($bankAccountRepository);
+$bankAccountId         = $bankAccountService->createAccount(15000);
 
 dump($bankAccountId);
 
@@ -29,3 +29,5 @@ $transactions = $bankAccountService->fetchTransactionsById($bankAccount->getId()
 foreach ($transactions as $transaction) {
     dump($transaction . '');
 }
+
+dump($bankAccount . '');

@@ -18,9 +18,13 @@ class BankAccount
      */
     public function __construct(BankAccountId $bankAccountId, MoneyInterface $money)
     {
-        $this->bankAccountId = $bankAccountId;
-        $this->money = $money;
-        $this->bankTransactions = [];
+        $this->bankAccountId      = $bankAccountId;
+        $this->money              = $money;
+        $this->bankTransactions[] = BankTransaction::deposite(
+            $this,
+            $money,
+            "Ouverture d'un compte bancaire avec solde initiale"
+        );
     }
 
     public function getId(): BankAccountId
@@ -39,7 +43,7 @@ class BankAccount
     public function deposit(MoneyInterface $money, string $raison): void
     {
         $this->money->add($money);
-        $bankTransaction = new BankTransaction($this, TransactionType::DEPOSIT, $money, $raison);
+        $bankTransaction          = new BankTransaction($this, TransactionType::DEPOSIT, $money, $raison);
         $this->bankTransactions[] = $bankTransaction;
     }
 
@@ -49,15 +53,14 @@ class BankAccount
             throw new \InvalidArgumentException("Votre solde est insuffisante!");
         }
         $this->money->subtracts($money);
-        $bankTransaction = new BankTransaction($this, TransactionType::RETRAIT, $money, $motif);
-        $this->bankTransactions[] = $bankTransaction;
+        $this->bankTransactions[] = BankTransaction::retrait($this, $money, $motif);
     }
 
     public function transfert(BankAccount $recipientAccount, MoneyInterface $money, string $raison): void
     {
         $this->retrait($money, $raison);
         $recipientAccount->deposit($money, $raison);
-        $bankTransaction = new BankTransaction($this, TransactionType::TRANSFER, $money, $raison);
+        $bankTransaction          = BankTransaction::transfert($this, $money, $raison);
         $this->bankTransactions[] = $bankTransaction;
     }
 
@@ -73,6 +76,11 @@ class BankAccount
 
     public function __toString(): string
     {
-        return sprintf("BankAccount # %s : Ar %d", $this->bankAccountId, $this->getAmount());
+        return sprintf(
+            "[%s] BankAccount #%s avec solde: Ar %d",
+            (new \DateTime())->format('Y-m-d'),
+            $this->bankAccountId,
+            $this->getAmount()
+        );
     }
 }
