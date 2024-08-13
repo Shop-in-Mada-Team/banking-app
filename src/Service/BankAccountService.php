@@ -7,9 +7,9 @@ use Shopinmada\BankingApp\Domain\ValueObject\Money;
 use Shopinmada\BankingApp\Factory\BankAccountFactory;
 use Shopinmada\BankingApp\Repository\BankAccountRepositoryInterface;
 
-final class BankAccountService
+final readonly class BankAccountService
 {
-    public function __construct(private readonly BankAccountRepositoryInterface $bankAccountRepository)
+    public function __construct(private BankAccountRepositoryInterface $bankAccountRepository)
     {
     }
 
@@ -20,21 +20,21 @@ final class BankAccountService
         return $bankAccount->getId();
     }
 
-    public function depositMoney(BankAccountId $bankAccountId, int $amount, string $reason)
+    public function depositMoney(BankAccountId $bankAccountId, int $amount, string $reason): void
     {
         $bankAccount = $this->bankAccountRepository->get($bankAccountId);
         $bankAccount->deposit(Money::fromAmount('MGA', $amount), $reason);
         $this->bankAccountRepository->add($bankAccount);
     }
 
-    public function retraitMoney(BankAccountId $bankAccountId, int $amount, string $reason)
+    public function retraitMoney(BankAccountId $bankAccountId, int $amount, string $reason): void
     {
         $bankAccount = $this->bankAccountRepository->get($bankAccountId);
         $bankAccount->retrait(Money::fromAmount('MGA', $amount), $reason);
         $this->bankAccountRepository->add($bankAccount);
     }
 
-    public function transfertMoney(string $bankAccountSender, string $bankAccountRecipient, int $amount, string $reason)
+    public function transfertMoney(string $bankAccountSender, string $bankAccountRecipient, int $amount, string $reason): void
     {
         $senderAccount = $this->bankAccountRepository->get(BankAccountId::fromInt($bankAccountSender));
         $recipientAccount = $this->bankAccountRepository->get(BankAccountId::fromInt($bankAccountRecipient));

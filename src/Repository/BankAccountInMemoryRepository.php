@@ -21,25 +21,25 @@ final class BankAccountInMemoryRepository implements BankAccountRepositoryInterf
 
     public function get(BankAccountId $bankAccountId): BankAccount
     {
-        [$bankAccount] = array_filter($this->bankAccounts, fn(BankAccount $ba) => $ba->getId() == $bankAccountId);
+        [$bankAccount] = array_filter($this->bankAccounts, fn(BankAccount $ba) => $ba->getId() === $bankAccountId);
         return $bankAccount;
     }
 
     public function findById(BankAccountId $bankAccountId): ?BankAccount
     {
         try {
-            [$bankAccount] = array_filter($this->bankAccounts, fn(BankAccount $ba) => $ba->getId() == $bankAccountId);
+            [$bankAccount] = array_filter($this->bankAccounts, fn(BankAccount $ba) => $ba->getId() === $bankAccountId);
             return $bankAccount;
         } catch (\Exception $exception) {
             return null;
         }
     }
 
-    public function remove(BankAccount $bankAccount)
+    public function remove(BankAccount $bankAccount): void
     {
         if (!$this->findById($bankAccount->getId())) {
             throw new \InvalidArgumentException(sprintf("Unable to remove bank account %d", $bankAccount->getId()));
         }
-        $this->bankAccounts = array_filter($this->bankAccounts, fn(BankAccount $ba) => $ba->getId() != $bankAccount->getId());
+        $this->bankAccounts = array_filter($this->bankAccounts, fn(BankAccount $ba) => $ba->getId() !== $bankAccount->getId());
     }
 }
