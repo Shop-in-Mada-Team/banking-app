@@ -2,6 +2,7 @@
 
 namespace Shopinmada\BankingApp\Service;
 
+use Shopinmada\BankingApp\Domain\Exception\InvalidBankAccountNameException;
 use Shopinmada\BankingApp\Domain\ValueObject\BankAccountId;
 use Shopinmada\BankingApp\Domain\ValueObject\Money;
 use Shopinmada\BankingApp\Factory\BankAccountFactory;
@@ -13,9 +14,12 @@ final readonly class BankAccountService
     {
     }
 
-    public function createAccount(int $amount): string
+    /**
+     * @throws InvalidBankAccountNameException
+     */
+    public function createAccount(string $bankAccountName, int $amount): string
     {
-        $bankAccount = BankAccountFactory::create('MGA', $amount);
+        $bankAccount = BankAccountFactory::create('MGA', $bankAccountName, $amount);
         $this->bankAccountRepository->add($bankAccount);
         return $bankAccount->getId();
     }
@@ -34,9 +38,13 @@ final readonly class BankAccountService
         $this->bankAccountRepository->add($bankAccount);
     }
 
-    public function transfertMoney(string $bankAccountSender, string $bankAccountRecipient, int $amount, string $reason): void
-    {
-        $senderAccount = $this->bankAccountRepository->get(BankAccountId::fromInt($bankAccountSender));
+    public function transfertMoney(
+        string $bankAccountSender,
+        string $bankAccountRecipient,
+        int $amount,
+        string $reason
+    ): void {
+        $senderAccount    = $this->bankAccountRepository->get(BankAccountId::fromInt($bankAccountSender));
         $recipientAccount = $this->bankAccountRepository->get(BankAccountId::fromInt($bankAccountRecipient));
         $senderAccount->transfert($recipientAccount, Money::fromAmount('MGA', $amount), $reason);
     }
