@@ -54,7 +54,7 @@ class BankTransaction
         return new self($bankAccount, TransactionType::TRANSFER, $money, $raison);
     }
 
-    public static function deposite(BankAccount $bankAccount, MoneyInterface $money, string $raison): BankTransaction
+    public static function deposit(BankAccount $bankAccount, MoneyInterface $money, string $raison): BankTransaction
     {
         return new self($bankAccount, TransactionType::DEPOSIT, $money, $raison);
     }
@@ -63,9 +63,9 @@ class BankTransaction
     {
         return sprintf(
             "%s | %s | %s",
-            $this->getMotif(),
-            $this->getMoney(),
-            $this->getTransactionDate()->format('Y-m-d')
+            $this->transactionDate->format('Y-m-d'),
+            $this->motif,
+            $this->amount
         );
     }
 }

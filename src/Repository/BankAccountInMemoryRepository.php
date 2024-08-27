@@ -3,6 +3,7 @@
 namespace Shopinmada\BankingApp\Repository;
 
 use Shopinmada\BankingApp\Domain\Entity\BankAccount;
+use Shopinmada\BankingApp\Domain\Exception\BankAccountNotFoundException;
 use Shopinmada\BankingApp\Domain\ValueObject\BankAccountId;
 
 final class BankAccountInMemoryRepository implements BankAccountRepositoryInterface
@@ -21,16 +22,18 @@ final class BankAccountInMemoryRepository implements BankAccountRepositoryInterf
 
     public function get(BankAccountId $bankAccountId): BankAccount
     {
-        [$bankAccount] = array_filter($this->bankAccounts, fn(BankAccount $ba) => $ba->getId() === $bankAccountId);
+        [$bankAccount] = array_filter(
+            $this->bankAccounts,
+            fn(BankAccount $ba) => $bankAccountId->equals($ba->getId())
+        );
         return $bankAccount;
     }
 
     public function findById(BankAccountId $bankAccountId): ?BankAccount
     {
         try {
-            [$bankAccount] = array_filter($this->bankAccounts, fn(BankAccount $ba) => $ba->getId() === $bankAccountId);
-            return $bankAccount;
-        } catch (\Exception $exception) {
+            return $this->get($bankAccountId);
+        } catch (\Throwable $throwable) {
             return null;
         }
     }
@@ -40,6 +43,9 @@ final class BankAccountInMemoryRepository implements BankAccountRepositoryInterf
         if (!$this->findById($bankAccount->getId())) {
             throw new \InvalidArgumentException(sprintf("Unable to remove bank account %d", $bankAccount->getId()));
         }
-        $this->bankAccounts = array_filter($this->bankAccounts, fn(BankAccount $ba) => $ba->getId() !== $bankAccount->getId());
+        $this->bankAccounts = array_filter(
+            $this->bankAccounts,
+            fn(BankAccount $ba) => $ba->getId() !== $bankAccount->getId()
+        );
     }
 }

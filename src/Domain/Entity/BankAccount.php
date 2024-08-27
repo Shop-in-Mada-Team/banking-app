@@ -24,12 +24,13 @@ class BankAccount
     {
         $this->bankAccountId      = $bankAccountId;
         $this->money              = $money;
-        $this->bankTransactions[] = BankTransaction::deposite(
-            $this,
-            $money,
-            "Ouverture d'un compte bancaire avec solde initiale"
-        );
         $this->bankAccountName    = $bankAccountName;
+        $this->bankTransactions[] = new BankTransaction(
+            $this,
+            TransactionType::DEPOSIT,
+            $money,
+            sprintf("Ouverture d'un %s avec solde initiale", $bankAccountName)
+        );
     }
 
     public function getId(): BankAccountId
@@ -53,8 +54,7 @@ class BankAccount
     public function deposit(MoneyInterface $money, string $raison): void
     {
         $this->money->add($money);
-        $bankTransaction          = new BankTransaction($this, TransactionType::DEPOSIT, $money, $raison);
-        $this->bankTransactions[] = $bankTransaction;
+        $this->bankTransactions[] = new BankTransaction($this, TransactionType::DEPOSIT, $money, $raison);
     }
 
     /**

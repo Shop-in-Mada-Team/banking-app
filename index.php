@@ -2,6 +2,7 @@
 
 
 use Shopinmada\BankingApp\Domain\Entity\BankTransaction;
+use Shopinmada\BankingApp\Domain\Exception\InvalidBankAccountNameException;
 use Shopinmada\BankingApp\Domain\ValueObject\BankAccountId;
 use Shopinmada\BankingApp\Domain\ValueObject\Money;
 use Shopinmada\BankingApp\Repository\BankAccountInMemoryRepository;
@@ -11,23 +12,20 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $bankAccountRepository = new BankAccountInMemoryRepository();
 $bankAccountService    = new BankAccountService($bankAccountRepository);
-$bankAccountId         = $bankAccountService->createAccount(15000);
+try {
+    $bankAccountId = $bankAccountService->createAccount('Principal Account', 15000);
 
-dump($bankAccountId);
 
-sleep(5);
-$bankAccount = $bankAccountRepository->get(BankAccountId::fromUuid($bankAccountId));
-$bankAccount->deposit(Money::fromAmount('MGA', 7000), 'Virement salaire mois de janvier!');
-sleep(5);
-$bankAccount->deposit(Money::fromAmount('MGA', 7000), 'Rembouressement frais médicaux');
-sleep(5);
-$bankAccount->deposit(Money::fromAmount('MGA', 8500), 'Payement freelance');
-sleep(10);
-$transactions = $bankAccountService->fetchTransactionsById($bankAccount->getId());
+    $bankAccount = $bankAccountRepository->get(BankAccountId::fromUuid($bankAccountId));
+    //dump($bankAccount . '');
+    $bankAccount->deposit(Money::fromAmount('MGA', 7000), 'Virement salaire mois de janvier!');
+    $bankAccount->deposit(Money::fromAmount('MGA', 7000), 'Rembouressement frais médicaux');
+    $bankAccount->deposit(Money::fromAmount('MGA', 8500), 'Payement freelance');
+    $transactions = $bankAccount->transactions();
 
-/**@var BankTransaction $transaction */
-foreach ($transactions as $transaction) {
-    dump($transaction . '');
+    /**@var BankTransaction $transaction */
+    foreach ($transactions as $transaction) {
+        dump($transaction . '');
+    }
+} catch (InvalidBankAccountNameException $e) {
 }
-
-dump($bankAccount . '');
